@@ -1,11 +1,11 @@
 public class Flight {
     private String flightnumber;
     private String destination;
-    private int departureTime;
+    private String departureTime;
     private int availableSeats;
     private double ticketPrice;
 
-    public Flight(String flightnumber, String destination, int departureTime, int availableSeats, double ticketPrice) {
+    public Flight(String flightnumber, String destination, String departureTime, int availableSeats, double ticketPrice) {
         this.flightnumber = flightnumber;
         this.destination = destination;
         this.departureTime = departureTime;
@@ -29,11 +29,11 @@ public class Flight {
         this.destination = destination;
     }
 
-    public int getDepartureTime() {
+    public String getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(int departureTime) {
+    public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
     }
 
