@@ -15,7 +15,7 @@ public class FibonacciMemoization  {
         }
 
         if(memo.containsKey(n)){
-            memo.get(n);
+           return memo.get(n);
         }
         int result = fib(n - 1,memo) + fib(n - 2,memo);
 
