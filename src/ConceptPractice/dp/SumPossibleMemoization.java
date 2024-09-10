@@ -1,12 +1,17 @@
 package ConceptPractice.dp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class SumPossible {
-    //BruteForce Approach
+public class SumPossibleMemoization {
+    //Dynamic Programming Approach
     public static boolean sumPossible(int amount , List <Integer> arr) {
+        return sumPossible(amount,arr,new HashMap<>());
+
+    }
+    public static boolean sumPossible(int amount , List <Integer> arr, HashMap <Integer,Boolean> memo) {
         if (amount == 0){
             return true;
         }
@@ -14,14 +19,18 @@ public class SumPossible {
         if(amount < 0){
             return false;
         }
+        if(memo.containsKey(amount)){
+            return memo.get(amount);
+        }
 
         for(int num : arr){
             int subAmount = amount - num;
-            if(sumPossible(subAmount,arr)){
+            if(sumPossible(subAmount,arr,memo)){
+                memo.put(subAmount,true);
                 return true;
             }
         }
-
+        memo.put(amount,false);
         return false;
     }
     public static void main(String[] args) {
