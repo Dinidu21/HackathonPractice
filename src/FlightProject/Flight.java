@@ -1,3 +1,5 @@
+package FlightProject;
+
 public class Flight {
     private String flightnumber;
     private String destination;

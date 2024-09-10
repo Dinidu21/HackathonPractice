@@ -1,5 +1,8 @@
+package FlightProject;
+
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Comparator;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
@@ -9,7 +12,7 @@ public class Main {
         System.out.println("\t=======================================================================");
         System.out.println("\t                         Add Flights                                ");
         System.out.println("\t=======================================================================");
-        System.out.print("\n\tEnter Flight Number: ");
+        System.out.print("\n\tEnter FlightProject.Flight Number: ");
         String flightnumber = sc.next();
         System.out.print("\n\tEnter Destination: ");
         String destination = sc.next();
@@ -23,8 +26,8 @@ public class Main {
         Flight f = new Flight(flightnumber, destination, departureTime, availableSeats, ticketPrice);
         flights.add(f);
 
-        System.out.println("\n\tFlight added successfully");
-        System.out.print("\n\tDo you want to add new Flight (yes/no) : ");
+        System.out.println("\n\tFlightProject.Flight added successfully");
+        System.out.print("\n\tDo you want to add new FlightProject.Flight (yes/no) : ");
         String choice = sc.next();
         if (choice.equals("yes")) {
             clearConsole();
@@ -56,7 +59,7 @@ public class Main {
             int count = 0;
             for (Flight f : flights) {
                 ++count;
-                System.out.println(count + " ) \n \tFlight Number : " + f.getFlightnumber());
+                System.out.println(count + " ) \n \tFlightProject.Flight Number : " + f.getFlightnumber());
                 System.out.println(" \tDestination : " + f.getDestination());
                 System.out.println(" \tDeparture Time : " + f.getDepartureTime());
                 System.out.println(" \tAvailable Seats : " + f.getAvailableSeats());
@@ -89,7 +92,7 @@ public class Main {
             int count = 0;
             for (Flight f : flights) {
                 ++count;
-                System.out.println(count + " ) \n \tFlight Number : " + f.getFlightnumber());
+                System.out.println(count + " ) \n \tFlightProject.Flight Number : " + f.getFlightnumber());
                 System.out.println(" \tDestination : " + f.getDestination());
                 System.out.println(" \tDeparture Time : " + f.getDepartureTime());
                 System.out.println(" \tAvailable Seats : " + f.getAvailableSeats());
@@ -98,14 +101,14 @@ public class Main {
 
             boolean flag = true;
             while (flag) {
-                System.out.print("\n\tEnter Flight Number you want to update : ");
+                System.out.print("\n\tEnter FlightProject.Flight Number you want to update : ");
                 String flightnumber = sc.next();
 
-                if (!flights.stream().anyMatch(f -> f.getFlightnumber().equals(flightnumber))) {
-                    System.out.println("\n\tFlight not found with this Flight Number. Please try again.");
+                if (flights.stream().noneMatch(f -> f.getFlightnumber().equals(flightnumber))) {
+                    System.out.println("\n\tFlightProject.Flight not found with this FlightProject.Flight Number. Please try again.");
                 } else {
                     flag = false;
-                    System.out.print("\n\tEnter New Flight Number you want to update : ");
+                    System.out.print("\n\tEnter New FlightProject.Flight Number you want to update : ");
                     String newFlightnumber = sc.next();
                     System.out.print("\n\tEnter new Destination you want to update: ");
                     String newDestination = sc.next();
@@ -126,8 +129,8 @@ public class Main {
                         }
                     }
 
-                    System.out.println("\n\tFlight updated successfully");
-                    System.out.print("\n\tDo you want update another Flight (yes/no) : ");
+                    System.out.println("\n\tFlightProject.Flight updated successfully");
+                    System.out.print("\n\tDo you want update another FlightProject.Flight (yes/no) : ");
                     String choice = sc.next();
                     if (choice.equals("yes")) {
                         clearConsole();
@@ -163,7 +166,7 @@ public class Main {
             int i = 0;
             for (Flight f : flights) {
                 ++i;
-                System.out.println(i + " ) \n \tFlight Number : " + f.getFlightnumber());
+                System.out.println(i + " ) \n \tFlightProject.Flight Number : " + f.getFlightnumber());
                 System.out.println(" \tDestination : " + f.getDestination());
                 System.out.println(" \tDeparture Time : " + f.getDepartureTime());
                 System.out.println(" \tAvailable Seats : " + f.getAvailableSeats());
@@ -174,16 +177,16 @@ public class Main {
 
         boolean flag = true;
         while (flag) {
-            System.out.print("\n\tEnter Flight Number to Delete : ");
+            System.out.print("\n\tEnter FlightProject.Flight Number to Delete : ");
             String flightnumber = sc.next();
             // check if flight exists
-            if (!flights.stream().anyMatch(f -> f.getFlightnumber().equals(flightnumber))) {
-                System.out.println("\n\tFlight not found with this Flight Number. Please try again.");
+            if (flights.stream().noneMatch(f -> f.getFlightnumber().equals(flightnumber))) {
+                System.out.println("\n\tFlightProject.Flight not found with this FlightProject.Flight Number. Please try again.");
             } else {
                 flag = false;
                 // delete flight from list if found
                 flights.removeIf(f -> f.getFlightnumber().equals(flightnumber));
-                System.out.println("\n\tFlight Deleted Successfully");
+                System.out.println("\n\tFlightProject.Flight Deleted Successfully");
                 System.out.print("\n\tDo you want to Back to Manage Flights Page (yes/no) : ");
                 String choice = sc.next();
                 if (choice.equals("yes")) {
@@ -230,7 +233,105 @@ public class Main {
                 deleteFlights();
                 break;
             case 5:
-                System.out.println("Exiting ");
+                clearConsole();
+                welcome();
+                break;
+            default:
+                System.out.println("Invalid choice");
+                break;
+        }
+    }
+
+    public static void displayAvailableFlights() {
+        System.out.println("\n\tHere are the Flights available Right Now");
+        System.out.println("\t-------------------------------------------------------------------------------");
+        System.out.println("\t|FlightProject.Flight Number | Destination | Departure Time | Available Seats | Ticket Price|");
+        System.out.println("\t-------------------------------------------------------------------------------");
+        
+        if (flights.isEmpty()) {
+            System.out.println("\n\tNo flights available.");
+            return;
+        }
+    
+        // Check if all flights have no available seats
+        boolean allSeatsBooked = true;
+        for (Flight f : flights) {
+            if (f.getAvailableSeats() > 0) {
+                allSeatsBooked = false;
+                break;
+            }
+        }
+    
+        if (allSeatsBooked) {
+            System.out.println("\n\tNo seats available Right Now. All Seats are booked in All Flights.");
+            return;
+        }
+    
+        // Sort flights by ticket price in ascending order
+        //insertion sort is not effiecient in this case,Here use Comparator comparingDouble
+        flights.sort(Comparator.comparingDouble(Flight::getTicketPrice));
+    
+        // Display sorted flights with available seats
+        int count = 0;
+        for (Flight f : flights) {
+            if (f.getAvailableSeats() > 0) {
+                count++;
+                System.out.println(count + ") \t" +
+                    f.getFlightnumber() + " \t\t" +
+                    f.getDestination() + " \t\t" +
+                    f.getDepartureTime() + " \t\t" +
+                    f.getAvailableSeats() + " \t\t" +
+                    f.getTicketPrice());
+                    System.out.println("\t=======================================================================");
+            }
+        }
+        
+        System.out.println("\t----------------------------------------------------------------------------");
+    }
+    
+    public static void searchFlights(){
+        System.out.println("\t=======================================================================");
+        System.out.println("\t                         Search Flights                                ");
+        System.out.println("\t=======================================================================");
+        System.out.println("\n \t[1] Book Tickets");
+        System.out.println("\n \t[2] Exit");
+        System.out.println("\t=======================================================================");
+
+        System.out.print("\nEnter your choice: ");
+        int choice = sc.nextInt();
+        switch (choice) {
+            case 1:
+                displayAvailableFlights();
+                break;
+            case 2:
+                clearConsole();
+                welcome();
+                break;
+            default:
+                System.out.println("Invalid choice");
+                break;
+        }
+    }
+
+    public static void bookTickets() {
+        System.out.println("\t=======================================================================");
+        System.out.println("\t                         Book Tickets                                  ");
+        System.out.println("\t=======================================================================");
+        System.out.println("\n\t[1]Search Flights");
+        System.out.println("\n\t[2] Exit");
+        System.out.println("\t=======================================================================");
+
+
+        System.out.print("\nEnter your choice: ");
+        int choice = sc.nextInt();
+        switch (choice) {
+            case 1:
+                clearConsole();
+                searchFlights();
+                break;
+            case 2:
+                clearConsole();
+                welcome();
                 break;
             default:
                 System.out.println("Invalid choice");
@@ -258,7 +359,8 @@ public class Main {
                 manageFlights();
                 break;
             case 2:
-                System.out.println("Book Tickets");
+                clearConsole();
+                bookTickets();
                 break;
             case 3:
                 System.out.println("Seating Arrangements");
@@ -278,7 +380,7 @@ public class Main {
         }
     }
 
-    private final static void clearConsole() {
+    private static void clearConsole() {
         final String os = System.getProperty("os.name");
         try {
             if (os.contains("Linux")) {
