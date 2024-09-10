@@ -1,12 +1,17 @@
 package ConceptPractice.dp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class MinChangeMinimumCoinsMemoization {
-    //BruteForce Approach
-    public static int minChangeProblem(int targetSum, List<Integer> arr) {
+    //Dynamic Programming Approach
+        public static int minChangeProblem(int targetSum, List<Integer> arr) {
+            return minChangeProblem(targetSum,arr,new HashMap<>());
+        }
+
+        public static int minChangeProblem(int targetSum, List<Integer> arr, HashMap<Integer,Integer> memo) {
         if(targetSum == 0 ){
             return 0;
         }
@@ -15,22 +20,26 @@ public class MinChangeMinimumCoinsMemoization {
             return -1;
         }
 
+        if (memo.containsKey(targetSum)){
+            return memo.get(targetSum);
+        }
+
         int minCoins = -1;
 
         for (int coin :arr){
             int subAmount = targetSum - coin;
-            int subCoins = minChangeProblem(subAmount,arr);
+            int subCoins = minChangeProblem(subAmount,arr,memo);
             if(subCoins != -1){
                 int numCoins = subCoins+1;
                 if(numCoins < minCoins || minCoins == -1){
                     minCoins =numCoins;
-
                 }
             }
         }
-
+        memo.put(targetSum,minCoins);
         return minCoins;
     }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         List<Integer> arr = new ArrayList<>();
